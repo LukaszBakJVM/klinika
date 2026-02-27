@@ -1,0 +1,78 @@
+CREATE TABLE PACJENT (
+                         ID BIGINT NOT NULL,
+                         IMIE VARCHAR(100) NOT NULL,
+                         NAZWISKO VARCHAR(100) NOT NULL,
+                         PESEL VARCHAR(11) NOT NULL,
+
+                         CONSTRAINT PK_PACJENT PRIMARY KEY (ID),
+                         CONSTRAINT UQ_PACJENT_PESEL UNIQUE (PESEL));
+
+
+
+
+CREATE SEQUENCE SEQ_PACJENT_ID;
+
+
+
+
+SET TERM ^ ;
+
+CREATE TRIGGER BI_PACJENT FOR PACJENT
+ACTIVE BEFORE INSERT POSITION 0
+AS
+BEGIN
+  IF (NEW.ID IS NULL) THEN
+    NEW.ID = NEXT VALUE FOR SEQ_PACJENT_ID;
+END^
+
+SET TERM ; ^
+
+
+
+
+CREATE TABLE WIZYTA (
+                        ID BIGINT NOT NULL,
+                        PACJENT_ID BIGINT NOT NULL,
+                        DATA_WIZYTY DATE NOT NULL,
+                        ROZPOZNANIE VARCHAR(255),
+                        KWOTA DECIMAL(10,2) NOT NULL,
+
+                        CONSTRAINT PK_WIZYTA PRIMARY KEY (ID),
+
+                        CONSTRAINT FK_WIZYTA_PACJENT
+                            FOREIGN KEY (PACJENT_ID)
+                                REFERENCES PACJENT(ID)
+                                ON DELETE CASCADE,
+
+                        CONSTRAINT CHK_WIZYTA_KWOTA
+                            CHECK (KWOTA >= 0)
+);
+
+
+
+
+CREATE SEQUENCE SEQ_WIZYTA_ID;
+
+
+
+
+SET TERM ^ ;
+
+CREATE TRIGGER BI_WIZYTA FOR WIZYTA
+ACTIVE BEFORE INSERT POSITION 0
+AS
+BEGIN
+  IF (NEW.ID IS NULL) THEN
+    NEW.ID = NEXT VALUE FOR SEQ_WIZYTA_ID;
+END^
+
+SET TERM ; ^
+
+
+
+
+CREATE INDEX IDX_WIZYTA_PACJENT
+    ON WIZYTA (PACJENT_ID);
+
+CREATE INDEX IDX_WIZYTA_DATA
+    ON WIZYTA (DATA_WIZYTY);
