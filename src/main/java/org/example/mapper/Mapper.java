@@ -36,5 +36,10 @@ public class Mapper {
                 .wizyty(wizytyDto)
                 .build();
     }
+  public   Wizyta toEntity(WizytaDto wizytaDto,Long pacjentId){
+        return
+               Wizyta.builder().pacjentId(pacjentId).dataWizyty(wizytaDto.getDataWizyty()).rozpoznanie(wizytaDto.getRozpoznanie())
+                .kwota(wizytaDto.getKwota()).build();
+    }
 
 }

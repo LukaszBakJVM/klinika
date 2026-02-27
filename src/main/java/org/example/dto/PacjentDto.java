@@ -7,12 +7,12 @@ import javax.validation.constraints.NotBlank;
 
 @Builder
 public final class PacjentDto {
-    @NotBlank
+    @NotBlank(message = "Imię nie może być puste")
     private final String imie;
-    @NotBlank
+    @NotBlank(message = "Nazwisko nie może być puste")
     private final String nazwisko;
-    @NotBlank
-    @PESEL
+    @NotBlank(message = "Pesel nie może być pusty")
+    @PESEL(message = "Niepoprawny  Pesel")
     private final String pesel;
 
     public PacjentDto(String imie, String nazwisko, String pesel) {

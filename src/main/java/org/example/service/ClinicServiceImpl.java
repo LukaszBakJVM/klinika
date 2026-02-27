@@ -5,6 +5,7 @@ import org.example.dao.PacjentDAO;
 import org.example.dao.WizytaDAO;
 import org.example.dto.PacjentDto;
 import org.example.dto.PacjentZWizytamiDto;
+import org.example.dto.WizytaDto;
 import org.example.exception.DuplicatePesel;
 import org.example.exception.SqlConnectionException;
 import org.example.mapper.Mapper;
@@ -30,9 +31,10 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Override
-    public void zapiszPacjentaZWizytama(PacjentDto pacjentDto, Wizyta wizyta) {
+    public void zapiszPacjentaZWizytama(PacjentDto pacjentDto, WizytaDto wizytaDto) {
 
         validatorService.validation(pacjentDto);
+        validatorService.validation(wizytaDto);
 
 
         try (Connection conn = DbUtils.getConnection()) {
@@ -54,9 +56,8 @@ public class ClinicServiceImpl implements ClinicService {
                 }
 
 
-                Wizyta toSave = Wizyta.builder().pacjentId(pacjentId).dataWizyty(wizyta.getDataWizyty()).rozpoznanie(wizyta.getRozpoznanie())
-                        .kwota(wizyta.getKwota()).build();
-                wizytaDAO.save(conn, toSave);
+                Wizyta entity = mapper.toEntity(wizytaDto, pacjentId);
+                wizytaDAO.save(conn, entity);
 
                 conn.commit();
 
