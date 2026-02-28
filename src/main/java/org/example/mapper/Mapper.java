@@ -15,7 +15,7 @@ public class Mapper {
     }
 
     public Pacjent save(PacjentDto dto) {
-        return new Pacjent.Builder().imie(dto.getImie()).nazwisko(dto.getNazwisko()).pesel(dto.getPesel()).build();
+        return  Pacjent.builder().imie(dto.getImie()).nazwisko(dto.getNazwisko()).pesel(dto.getPesel()).build();
     }
 
 
@@ -35,6 +35,11 @@ public class Mapper {
                 .pesel(pacjent.getPesel())
                 .wizyty(wizytyDto)
                 .build();
+    }
+  public   Wizyta toEntity(WizytaDto wizytaDto,Long pacjentId){
+        return
+               Wizyta.builder().pacjentId(pacjentId).dataWizyty(wizytaDto.getDataWizyty()).rozpoznanie(wizytaDto.getRozpoznanie())
+                .kwota(wizytaDto.getKwota()).build();
     }
 
 }

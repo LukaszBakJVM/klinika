@@ -7,13 +7,14 @@ import java.util.Properties;
 
 public class DbUtils {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/clinic";
+    private final String URL = "jdbc:firebirdsql://localhost:3050//firebird/clinic.fdb";
 
-    public static Connection getConnection() throws SQLException {
+    public  Connection getConnection() throws SQLException {
 
         Properties props = new Properties();
-        props.setProperty("user", "postgres");
-        props.setProperty("password", "pass");
+        props.setProperty("user", "sysdba");
+        props.setProperty("password", "WH5ny6SjjmWZtvZTJTPm");
+
 
         return DriverManager.getConnection(URL, props);
     }

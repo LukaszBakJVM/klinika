@@ -45,12 +45,12 @@ public class PacjentDAO {
             try (ResultSet rs = ps.executeQuery()) {
 
                 if (rs.next()) {
-                    return new Pacjent.Builder().id(rs.getLong("ID")).imie(rs.getString("IMIE")).nazwisko(rs.getString("NAZWISKO")).pesel(rs.getString("PESEL")).build();
+                    return  Pacjent.builder().id(rs.getLong("ID")).imie(rs.getString("IMIE")).nazwisko(rs.getString("NAZWISKO")).pesel(rs.getString("PESEL")).build();
                 }
             }
         }
 
-        throw new SqlConnectionException("Nie udało się zapisać pacjenta");
+       return null;
     }
 
     public void zapiszPacjenta(Connection conn, Pacjent pacjent) throws SQLException {
