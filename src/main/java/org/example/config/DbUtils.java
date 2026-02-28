@@ -12,8 +12,9 @@ public class DbUtils {
     public  Connection getConnection() throws SQLException {
 
         Properties props = new Properties();
-        props.setProperty("user", "SYSDBA");
+        props.setProperty("user", "sysdba");
         props.setProperty("password", "WH5ny6SjjmWZtvZTJTPm");
+
 
         return DriverManager.getConnection(URL, props);
     }

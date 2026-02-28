@@ -51,16 +51,18 @@ public class ClinicServiceImpl implements ClinicService {
 
                 if (pesel != null) {
                     pacjentId = pesel.getId();
-                    pacjentDAO.zapiszPacjentaIWIzyte(conn, pesel);
-                } else {
+                    Wizyta entity = mapper.toEntity(zapisz.getWizytaDto(), pacjentId);
+                    wizytaDAO.save(conn, entity);
+
+                }else {
                     Pacjent save = mapper.save(zapisz.getPacjentDto());
                     pacjentId = pacjentDAO.zapiszPacjentaIWIzyte(conn, save);
+
+
+                    Wizyta entity = mapper.toEntity(zapisz.getWizytaDto(), pacjentId);
+                    wizytaDAO.save(conn, entity);
+
                 }
-
-
-                Wizyta entity = mapper.toEntity(zapisz.getWizytaDto(), pacjentId);
-                wizytaDAO.save(conn, entity);
-
                 conn.commit();
 
             } catch (Exception e) {
@@ -69,9 +71,9 @@ public class ClinicServiceImpl implements ClinicService {
                     conn.rollback();
                 } catch (SQLException ex) {
 
-                }
 
-                throw new SqlConnectionException(String.format("Błąd transakcji %s ", e));
+                    throw new SqlConnectionException(String.format("Błąd transakcji %s ", e));
+                }
             }
         } catch (SQLException e) {
             throw new SqlConnectionException(String.format("Błąd transakcji %s ", e));
@@ -115,7 +117,7 @@ public class ClinicServiceImpl implements ClinicService {
         try (Connection conn = dbUtils.getConnection()) {
             Pacjent pacjent = pacjentDAO.znajdzPoPeselu(conn, pesel);
             if (pacjent == null) {
-                throw new PacjentNotFoundException(String.format("Pacjent o peselu %s nie figuruje u nas w bazie  wybierz opcje 1 lub 2 z menu", pesel));
+                throw new PacjentNotFoundException(String.format("Pacjenta o peselu %s nie znaleziono u nas w bazie  wybierz opcje 1 lub 2 z menu", pesel));
             }
             List<Wizyta> byPacjent = wizytaDAO.findByPacjentId(conn, pacjent.getId());
             return mapper.toDto(pacjent, byPacjent);
