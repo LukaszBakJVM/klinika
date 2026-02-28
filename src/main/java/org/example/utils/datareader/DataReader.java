@@ -92,9 +92,9 @@ public class DataReader {
 
     private LocalDate readDate() {
         while (true) {
-            LocalDate parse;
+
             try {
-                printLine("Podaj datę (dd.MM.yyyy): ");
+                printLine("Podaj datę w formacie dd.MM.yyyy): ");
                 String input = sc.nextLine();
                 return parse(input, formatter);
 

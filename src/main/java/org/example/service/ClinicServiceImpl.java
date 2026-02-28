@@ -7,13 +7,12 @@ import org.example.dto.PacjentDto;
 import org.example.dto.PacjentZWizytamiDto;
 import org.example.dto.ZapiszPacjentaZWizytami;
 import org.example.exception.DuplicatePesel;
+import org.example.exception.PacjentNotFoundException;
 import org.example.exception.SqlConnectionException;
 import org.example.mapper.Mapper;
 import org.example.model.Pacjent;
 import org.example.model.Wizyta;
 import org.example.utils.validation.ValidatorService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -26,7 +25,7 @@ public class ClinicServiceImpl implements ClinicService {
     private final WizytaDAO wizytaDAO = new WizytaDAO();
     private final ValidatorService validatorService = new ValidatorService();
     private final Mapper mapper = new Mapper();
-    private final Logger logger = LoggerFactory.getLogger(ClinicServiceImpl.class);
+
     private final DbUtils dbUtils = new DbUtils();
 
 
@@ -51,8 +50,8 @@ public class ClinicServiceImpl implements ClinicService {
                 Long pacjentId;
 
                 if (pesel != null) {
-
                     pacjentId = pesel.getId();
+                    pacjentDAO.zapiszPacjentaIWIzyte(conn, pesel);
                 } else {
                     Pacjent save = mapper.save(zapisz.getPacjentDto());
                     pacjentId = pacjentDAO.zapiszPacjentaIWIzyte(conn, save);
@@ -69,7 +68,7 @@ public class ClinicServiceImpl implements ClinicService {
                 try {
                     conn.rollback();
                 } catch (SQLException ex) {
-                    logger.error(ex.getMessage());
+
                 }
 
                 throw new SqlConnectionException(String.format("Błąd transakcji %s ", e));
@@ -115,6 +114,9 @@ public class ClinicServiceImpl implements ClinicService {
     public PacjentZWizytamiDto pacjentZWizytami(String pesel) {
         try (Connection conn = dbUtils.getConnection()) {
             Pacjent pacjent = pacjentDAO.znajdzPoPeselu(conn, pesel);
+            if (pacjent == null) {
+                throw new PacjentNotFoundException(String.format("Pacjent o peselu %s nie figuruje u nas w bazie  wybierz opcje 1 lub 2 z menu", pesel));
+            }
             List<Wizyta> byPacjent = wizytaDAO.findByPacjentId(conn, pacjent.getId());
             return mapper.toDto(pacjent, byPacjent);
 
