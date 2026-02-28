@@ -15,7 +15,7 @@ public class Mapper {
     }
 
     public Pacjent save(PacjentDto dto) {
-        return new Pacjent.Builder().imie(dto.getImie()).nazwisko(dto.getNazwisko()).pesel(dto.getPesel()).build();
+        return  Pacjent.builder().imie(dto.getImie()).nazwisko(dto.getNazwisko()).pesel(dto.getPesel()).build();
     }
 
 

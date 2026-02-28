@@ -6,14 +6,14 @@ import org.hibernate.validator.constraints.pl.PESEL;
 import javax.validation.constraints.NotBlank;
 
 @Builder
-public final class PacjentDto {
+public  class PacjentDto {
     @NotBlank(message = "Imię nie może być puste")
-    private final String imie;
+    private  String imie;
     @NotBlank(message = "Nazwisko nie może być puste")
-    private final String nazwisko;
+    private  String nazwisko;
     @NotBlank(message = "Pesel nie może być pusty")
     @PESEL(message = "Niepoprawny  Pesel")
-    private final String pesel;
+    private  String pesel;
 
     public PacjentDto(String imie, String nazwisko, String pesel) {
         this.imie = imie;

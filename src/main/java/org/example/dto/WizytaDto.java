@@ -12,14 +12,13 @@ import java.time.LocalDate;
 @Builder
 public class WizytaDto {
     @NotNull(message = "Data wizyty nie może być pusta")
-
-    private final LocalDate dataWizyty;
+    private  LocalDate dataWizyty;
     @NotBlank(message = "Rozpoznanie nie może być puste")
     @Size(max = 255, message = "Rozpoznanie za długie")
-    private final String rozpoznanie;
+    private  String rozpoznanie;
     @NotNull(message = "Kwota nie może być pusta")
     @DecimalMin(value = "0.0", message = "Kwota nie może być ujemna")
-    private final BigDecimal kwota;
+    private  BigDecimal kwota;
 
     public WizytaDto(LocalDate dataWizyty, String rozpoznanie, BigDecimal kwota) {
         this.dataWizyty = dataWizyty;
@@ -41,6 +40,6 @@ public class WizytaDto {
 
     @Override
     public String toString() {
-        return "WizytaDto{" + "dataWizyty=" + dataWizyty + ", rozpoznanie='" + rozpoznanie + '\'' + ", kwota=" + kwota + '}';
+        return  "dataWizyty " + dataWizyty + ", rozpoznanie '" + rozpoznanie + '\'' + ", kwota " + kwota ;
     }
 }

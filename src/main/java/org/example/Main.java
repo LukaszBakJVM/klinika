@@ -6,10 +6,10 @@ import java.util.logging.LogManager;
 
 public class Main {
     private static final String APP_NAME = "Klinika v2.4";
-    public static void main(String[] args) throws ClassNotFoundException {
+
+    public static void main(String[] args)  {
 
 
-        System.out.println(Class.forName("org.firebirdsql.jdbc.FBDriver"));
         LogManager.getLogManager().reset();
         System.out.println(APP_NAME);
         KlinikaControl klinikaControl = new KlinikaControl();

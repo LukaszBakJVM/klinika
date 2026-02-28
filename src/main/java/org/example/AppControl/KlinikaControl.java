@@ -15,8 +15,13 @@ import java.util.InputMismatchException;
 
 public class KlinikaControl {
 
-    private final DataReader dataReader = new DataReader();
-    ClinicService clinicService = new ClinicServiceImpl();
+    private final DataReader dataReader;
+    private final ClinicService clinicService;
+
+    public KlinikaControl() {
+        this.dataReader = new DataReader();
+        this.clinicService = new ClinicServiceImpl();
+    }
 
 
     public void controlLoop() {
@@ -41,7 +46,7 @@ public class KlinikaControl {
                     case PRINT_COST_VISIT_IN_DATE_RANGE:
                         sumaKosztowWizyt();
 
-                    break;
+                        break;
 
                     case EXIT:
                         exit();
@@ -100,7 +105,8 @@ public class KlinikaControl {
         }
 
     }
-    private void wyszukajWizytyNaPodstawiePeselu(){
+
+    private void wyszukajWizytyNaPodstawiePeselu() {
         String pesel = dataReader.podajPesel();
         PacjentZWizytamiDto pacjentZWizytamiDto = clinicService.pacjentZWizytami(pesel);
         dataReader.printLine(pacjentZWizytamiDto);

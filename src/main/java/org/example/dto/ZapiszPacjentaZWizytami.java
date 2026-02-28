@@ -4,8 +4,8 @@ import lombok.Builder;
 
 @Builder
 public class ZapiszPacjentaZWizytami {
-   private final PacjentDto pacjentDto;
-   private final WizytaDto wizytaDto;
+   private  PacjentDto pacjentDto;
+   private  WizytaDto wizytaDto;
 
     public ZapiszPacjentaZWizytami(PacjentDto pacjentDto, WizytaDto wizytaDto) {
         this.pacjentDto = pacjentDto;

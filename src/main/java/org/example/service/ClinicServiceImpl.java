@@ -21,16 +21,36 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ClinicServiceImpl implements ClinicService {
-    private final PacjentDAO pacjentDAO = new PacjentDAO();
-    private final WizytaDAO wizytaDAO = new WizytaDAO();
-    private final ValidatorService validatorService = new ValidatorService();
-    private final Mapper mapper = new Mapper();
+    private final PacjentDAO pacjentDAO;
+    private final WizytaDAO wizytaDAO;
+    private final ValidatorService validatorService;
+    private final Mapper mapper;
+    private final DbUtils dbUtils;
 
-    private final DbUtils dbUtils = new DbUtils();
+    public ClinicServiceImpl(
+            PacjentDAO pacjentDAO,
+
+            WizytaDAO wizytaDAO,
+            ValidatorService validatorService,
+            Mapper mapper,
+            DbUtils dbUtils) {
+
+        this.pacjentDAO = pacjentDAO;
+        this.wizytaDAO = wizytaDAO;
+        this.validatorService = validatorService;
+        this.mapper = mapper;
+        this.dbUtils = dbUtils;
+    }
 
 
     public ClinicServiceImpl() {
+        this.dbUtils = new DbUtils();
+        this.pacjentDAO = new PacjentDAO();
+        this.wizytaDAO = new WizytaDAO();
+        this.validatorService = new ValidatorService();
+        this.mapper = new Mapper();
     }
+
 
     @Override
     public void zapiszPacjentaZWizytama(ZapiszPacjentaZWizytami zapisz) {
@@ -54,7 +74,7 @@ public class ClinicServiceImpl implements ClinicService {
                     Wizyta entity = mapper.toEntity(zapisz.getWizytaDto(), pacjentId);
                     wizytaDAO.save(conn, entity);
 
-                }else {
+                } else {
                     Pacjent save = mapper.save(zapisz.getPacjentDto());
                     pacjentId = pacjentDAO.zapiszPacjentaIWIzyte(conn, save);
 

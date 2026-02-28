@@ -39,7 +39,7 @@ public class PacjentZWizytamiDto {
 
     @Override
     public String toString() {
-        return "PacjentZWizytamiDto{" + "imie='" + imie + '\'' + ", nazwisko='" + nazwisko + '\'' + ", pesel='" + pesel + '\'' + ", wizyty=" + wizyty + '}';
+        return "imie='" + imie + '\'' + ", nazwisko " + nazwisko + '\'' + ", pesel " + pesel + '\'' + ", wizyty " + wizyty ;
     }
 }
 
