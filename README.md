@@ -41,7 +41,7 @@ W tej klasie ustaw:
 - URL bazy danych
 - użytkownika
 - hasło
-- sterownik JDBC (jeśli wymagany)
+
 
 ---
 
