@@ -2,7 +2,9 @@ package org.example.service;
 
 import org.example.config.DbUtils;
 import org.example.dao.PacjentDAO;
+import org.example.dao.PacjentDAOImpl;
 import org.example.dao.WizytaDAO;
+import org.example.dao.WizytaDAOImpl;
 import org.example.dto.PacjentDto;
 import org.example.dto.PacjentZWizytamiDto;
 import org.example.dto.ZapiszPacjentaZWizytami;
@@ -45,8 +47,8 @@ public class ClinicServiceImpl implements ClinicService {
 
     public ClinicServiceImpl() {
         this.dbUtils = new DbUtils();
-        this.pacjentDAO = new PacjentDAO();
-        this.wizytaDAO = new WizytaDAO();
+        this.pacjentDAO = new PacjentDAOImpl();
+        this.wizytaDAO = new WizytaDAOImpl();
         this.validatorService = new ValidatorService();
         this.mapper = new Mapper();
     }
