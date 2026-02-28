@@ -1,4 +1,4 @@
-udowanie projektu -> mvn clean package
+Budowanie projektu -> mvn clean package
 
 org.example.config.DbUtils -> konfiguracja bazy
 
