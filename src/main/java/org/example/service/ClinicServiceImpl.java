@@ -5,7 +5,7 @@ import org.example.dao.PacjentDAO;
 import org.example.dao.WizytaDAO;
 import org.example.dto.PacjentDto;
 import org.example.dto.PacjentZWizytamiDto;
-import org.example.dto.WizytaDto;
+import org.example.dto.ZapiszPacjentaZWizytami;
 import org.example.exception.DuplicatePesel;
 import org.example.exception.SqlConnectionException;
 import org.example.mapper.Mapper;
@@ -15,8 +15,10 @@ import org.example.utils.validation.ValidatorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class ClinicServiceImpl implements ClinicService {
@@ -24,26 +26,27 @@ public class ClinicServiceImpl implements ClinicService {
     private final WizytaDAO wizytaDAO = new WizytaDAO();
     private final ValidatorService validatorService = new ValidatorService();
     private final Mapper mapper = new Mapper();
-    Logger logger = LoggerFactory.getLogger(ClinicServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ClinicServiceImpl.class);
+    private final DbUtils dbUtils = new DbUtils();
 
 
     public ClinicServiceImpl() {
     }
 
     @Override
-    public void zapiszPacjentaZWizytama(PacjentDto pacjentDto, WizytaDto wizytaDto) {
+    public void zapiszPacjentaZWizytama(ZapiszPacjentaZWizytami zapisz) {
 
-        validatorService.validation(pacjentDto);
-        validatorService.validation(wizytaDto);
+        validatorService.validation(zapisz.getPacjentDto());
+        validatorService.validation(zapisz.getWizytaDto());
 
 
-        try (Connection conn = DbUtils.getConnection()) {
+        try (Connection conn = dbUtils.getConnection()) {
 
             try {
                 conn.setAutoCommit(false);
 
 
-                Pacjent pesel = pacjentDAO.znajdzPoPeselu(conn, pacjentDto.getPesel());
+                Pacjent pesel = pacjentDAO.znajdzPoPeselu(conn, zapisz.getPacjentDto().getPesel());
 
                 Long pacjentId;
 
@@ -51,50 +54,13 @@ public class ClinicServiceImpl implements ClinicService {
 
                     pacjentId = pesel.getId();
                 } else {
-                    Pacjent save = mapper.save(pacjentDto);
+                    Pacjent save = mapper.save(zapisz.getPacjentDto());
                     pacjentId = pacjentDAO.zapiszPacjentaIWIzyte(conn, save);
                 }
 
 
-                Wizyta entity = mapper.toEntity(wizytaDto, pacjentId);
+                Wizyta entity = mapper.toEntity(zapisz.getWizytaDto(), pacjentId);
                 wizytaDAO.save(conn, entity);
-
-                conn.commit();
-
-            } catch (Exception e) {
-
-                try {
-                    conn.rollback();
-                } catch (SQLException ex) {
-                   logger.error(ex.getMessage());
-                }
-
-                throw new SqlConnectionException(String.format("Błąd transakcji %s ", e));
-            }
-        } catch (SQLException e) {
-            throw new SqlConnectionException(String.format("Błąd transakcji %s ", e));
-        }
-    }
-
-    public void zapiszPacjenta(PacjentDto pacjentDto) {
-          validatorService.validation(pacjentDto);
-
-        try (Connection conn = DbUtils.getConnection()) {
-
-            try {
-                conn.setAutoCommit(false);
-
-
-                Pacjent pesel = pacjentDAO.znajdzPoPeselu(conn, pacjentDto.getPesel());
-
-                if (pesel != null) {
-
-                    throw new DuplicatePesel(String.format("Pacjent o podanym peselu %s posiada juz konto", pesel.getPesel()));
-                } else {
-                    Pacjent save = mapper.save(pacjentDto);
-                    pacjentDAO.zapiszPacjenta(conn, save);
-                }
-
 
                 conn.commit();
 
@@ -112,18 +78,63 @@ public class ClinicServiceImpl implements ClinicService {
             throw new SqlConnectionException(String.format("Błąd transakcji %s ", e));
         }
     }
-  @Override
-  public   PacjentZWizytamiDto pacjentZWizytami(String pesel) {
-        try (Connection conn = DbUtils.getConnection()) {
+
+    @Override
+    public void zapiszPacjenta(PacjentDto pacjentDto) {
+        validatorService.validation(pacjentDto);
+
+        try (Connection conn = dbUtils.getConnection()) {
+
+            try {
+                conn.setAutoCommit(false);
+
+                Pacjent pesel = pacjentDAO.znajdzPoPeselu(conn, pacjentDto.getPesel());
+
+                if (pesel != null) {
+                    throw new DuplicatePesel(String.format("Pacjent o podanym peselu %s posiada juz konto", pesel.getPesel()));
+                } else {
+                    Pacjent save = mapper.save(pacjentDto);
+                    pacjentDAO.zapiszPacjenta(conn, save);
+                }
+
+                conn.commit();
+
+            } catch (DuplicatePesel e) {
+                conn.rollback();
+                throw e;
+            } catch (Exception e) {
+                conn.rollback();
+                throw new SqlConnectionException("Błąd transakcji");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public PacjentZWizytamiDto pacjentZWizytami(String pesel) {
+        try (Connection conn = dbUtils.getConnection()) {
             Pacjent pacjent = pacjentDAO.znajdzPoPeselu(conn, pesel);
             List<Wizyta> byPacjent = wizytaDAO.findByPacjentId(conn, pacjent.getId());
-            return mapper.toDto(pacjent,byPacjent);
+            return mapper.toDto(pacjent, byPacjent);
 
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-  }
+    }
+
+    @Override
+    public BigDecimal kwota(LocalDate poczatek, LocalDate koniec) {
+
+        try (Connection conn = dbUtils.getConnection()) {
+            return wizytaDAO.sumByDateRange(conn, poczatek, koniec);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
 
 

@@ -4,6 +4,7 @@ import org.example.model.Wizyta;
 
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,15 +53,15 @@ public class WizytaDAO {
 
 
 
-    public BigDecimal sumByDateRange(Connection conn,Long pacjentId, Date from, Date to) throws SQLException {
+    public BigDecimal sumByDateRange(Connection conn, LocalDate from, LocalDate to) throws SQLException {
 
         String sql = "SELECT SUM(KWOTA) FROM WIZYTA WHERE  DATA_WIZYTY BETWEEN ? AND ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
 
-            ps.setDate(2, from);
-            ps.setDate(3, to);
+            ps.setDate(1, java.sql.Date.valueOf(from));
+            ps.setDate(2, java.sql.Date.valueOf(to));
 
             ResultSet rs = ps.executeQuery();
 

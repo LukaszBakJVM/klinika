@@ -50,7 +50,7 @@ public class PacjentDAO {
             }
         }
 
-        throw new SqlConnectionException("Nie udało się zapisać pacjenta");
+        throw new SqlConnectionException("Brak pacjenta w bazie");
     }
 
     public void zapiszPacjenta(Connection conn, Pacjent pacjent) throws SQLException {
