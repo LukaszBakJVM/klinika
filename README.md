@@ -6,7 +6,7 @@ java -jar E:\sciezka do jar \clinic-1.0-SNAPSHOT.jar
 
 build.bat
 ########################################################################################
-@echo off
+#@echo off
 setlocal
 
 echo Przejscie do folderu projektu...
