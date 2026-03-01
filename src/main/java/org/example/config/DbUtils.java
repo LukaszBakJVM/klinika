@@ -3,19 +3,18 @@ package org.example.config;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class DbUtils {
 
-    private final String URL = "jdbc:firebirdsql://localhost:3050//firebird/clinic.fdb";
+    private final ConfigLoader configLoader = new ConfigLoader();
 
-    public  Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
 
-        Properties props = new Properties();
-        props.setProperty("user", "sysdba");
-        props.setProperty("password", "WH5ny6SjjmWZtvZTJTPm");
+        String url = configLoader.get("db.url");
+        String user = configLoader.get("db.user");
+        String password = configLoader.get("db.password");
 
 
-        return DriverManager.getConnection(URL, props);
+        return DriverManager.getConnection(url, user, password);
     }
 }
