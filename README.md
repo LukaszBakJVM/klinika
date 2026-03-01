@@ -43,8 +43,9 @@ W tej klasie ustaw:
 - hasło
 
 - struktura tabel
+   ```
 - \resources\schema.sql
-
+ ```
 
 ---
 
