@@ -30,7 +30,7 @@ target/clinic-1.0-SNAPSHOT.jar
 
 ## ⚙️ Konfiguracja bazy danych
 
-Konfiguracja połączenia z bazą danych znajduje się w klasie:
+Konfiguracja połączenia z bazą danych znajduje się w :
 
 ```
 resources/application.properties
