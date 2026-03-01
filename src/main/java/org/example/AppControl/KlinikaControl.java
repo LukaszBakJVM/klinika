@@ -119,7 +119,7 @@ public class KlinikaControl {
             dataReader.printLine(BigDecimal.ZERO);
 
         } else {
-            dataReader.printLine(kwota);
+            dataReader.printLine(String.format("%s zł",kwota));
         }
     }
 

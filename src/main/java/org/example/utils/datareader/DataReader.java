@@ -69,8 +69,10 @@ public class DataReader {
     }
 
     public ZakresDaty kwotyWZakresieDaty() {
+        printLine("Data poczatkowa");
         LocalDate dataPocztkowa = readDate();
 
+        printLine("Data koncowa");
         LocalDate dataKoncowa = readDate();
 
         return ZakresDaty.builder().dataPoczatkowa(dataPocztkowa).dataKoncowa(dataKoncowa).build();
