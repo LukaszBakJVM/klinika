@@ -42,6 +42,9 @@ W tej klasie ustaw:
 - użytkownika
 - hasło
 
+- struktura tabel
+- \resources\schema.sql
+
 
 ---
 
