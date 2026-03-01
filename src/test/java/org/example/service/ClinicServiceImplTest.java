@@ -23,6 +23,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -68,7 +69,7 @@ class ClinicServiceImplTest {
         ZapiszPacjentaZWizytami dto = ZapiszPacjentaZWizytami.builder().pacjentDto(pacjentDto).wizytaDto(wizytaDto).build();
 
 
-        when(pacjentDAO.znajdzPoPeselu(any(), anyString())).thenReturn(null);
+        when(pacjentDAO.znajdzPoPeselu(any(), anyString())).thenReturn(Optional.empty());
 
         // when
         service.zapiszPacjentaZWizytama(dto);
@@ -96,7 +97,7 @@ class ClinicServiceImplTest {
         when(dbUtils.getConnection()).thenReturn(connection);
 
 
-        when(pacjentDAO.znajdzPoPeselu(any(), eq("123"))).thenReturn(pacjent);
+        when(pacjentDAO.znajdzPoPeselu(any(), eq("123"))).thenReturn(Optional.of(pacjent));
 
         when(mapper.toEntity(eq(wizytaDto), eq(1L))).thenReturn(Wizyta.builder().build());
 
@@ -112,8 +113,8 @@ class ClinicServiceImplTest {
     @Test
     void niePowinienZapisacGdyPeselIstnieje() throws SQLException {
           //given
-
-        when(pacjentDAO.znajdzPoPeselu(any(), eq("00311191370"))).thenReturn(mock(Pacjent.class));
+        Pacjent pacjent = Pacjent.builder().id(1L).imie("Jan").nazwisko("Kowalski").pesel("83051659935").build();
+        when(pacjentDAO.znajdzPoPeselu(any(), eq("00311191370"))).thenReturn(Optional.of(pacjent));
         when(dbUtils.getConnection()).thenReturn(connection);
 
 
@@ -135,7 +136,7 @@ class ClinicServiceImplTest {
         when(dbUtils.getConnection()).thenReturn(connection);
 
 
-        when(pacjentDAO.znajdzPoPeselu(any(), eq("00311191370"))).thenReturn(pacjent);
+        when(pacjentDAO.znajdzPoPeselu(any(), eq("00311191370"))).thenReturn(Optional.of(pacjent));
 
         when(wizytaDAO.findByPacjentId(any(), eq(1L))).thenReturn(Collections.emptyList());
         when(mapper.toDto(any(), any())).thenReturn(mock(PacjentZWizytamiDto.class));

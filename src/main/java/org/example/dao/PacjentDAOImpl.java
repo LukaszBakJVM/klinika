@@ -4,6 +4,7 @@ import org.example.exception.SqlConnectionException;
 import org.example.model.Pacjent;
 
 import java.sql.*;
+import java.util.Optional;
 
 public class PacjentDAOImpl implements PacjentDAO {
 
@@ -37,7 +38,7 @@ public class PacjentDAOImpl implements PacjentDAO {
 
 
     @Override
-    public Pacjent znajdzPoPeselu(Connection conn, String pesel) {
+    public Optional<Pacjent> znajdzPoPeselu(Connection conn, String pesel) {
 
 
         String zmajdzNaPodstawiePesel = "SELECT ID, IMIE, NAZWISKO, PESEL FROM PACJENT WHERE PESEL = ?";
@@ -49,14 +50,15 @@ public class PacjentDAOImpl implements PacjentDAO {
             try (ResultSet rs = ps.executeQuery()) {
 
                 if (rs.next()) {
-                    return Pacjent.builder().id(rs.getLong("ID")).imie(rs.getString("IMIE")).nazwisko(rs.getString("NAZWISKO")).pesel(rs.getString("PESEL")).build();
+                    Pacjent pacjent1111111 = Pacjent.builder().id(rs.getLong("ID")).imie(rs.getString("IMIE")).nazwisko(rs.getString("NAZWISKO")).pesel(rs.getString("PESEL")).build();
+                    return Optional.of(pacjent1111111);
                 }
             }
         } catch (SQLException e) {
             throw new SqlConnectionException("Błąd odczytu pacjenta po PESEL  ", e);
         }
 
-        return null;
+        return Optional.empty();
     }
 
 

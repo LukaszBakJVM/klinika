@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class ClinicServiceImpl implements ClinicService {
     private final PacjentDAO pacjentDAO;
@@ -67,12 +68,12 @@ public class ClinicServiceImpl implements ClinicService {
                 conn.setAutoCommit(false);
 
 
-                Pacjent pesel = pacjentDAO.znajdzPoPeselu(conn, zapisz.getPacjentDto().getPesel());
+                Optional<Pacjent> pesel = pacjentDAO.znajdzPoPeselu(conn, zapisz.getPacjentDto().getPesel());
 
                 Long pacjentId;
 
-                if (pesel != null) {
-                    pacjentId = pesel.getId();
+                if (pesel.isPresent()) {
+                    pacjentId = pesel.get().getId();
                     Wizyta entity = mapper.toEntity(zapisz.getWizytaDto(), pacjentId);
                     wizytaDAO.save(conn, entity);
 
@@ -111,10 +112,10 @@ public class ClinicServiceImpl implements ClinicService {
             try {
                 conn.setAutoCommit(false);
 
-                Pacjent pesel = pacjentDAO.znajdzPoPeselu(conn, pacjentDto.getPesel());
+                Optional<Pacjent> pesel = pacjentDAO.znajdzPoPeselu(conn, pacjentDto.getPesel());
 
-                if (pesel != null) {
-                    throw new DuplicatePesel(String.format("Pacjent o podanym peselu %s posiada juz konto", pesel.getPesel()));
+                if (pesel.isPresent()) {
+                    throw new DuplicatePesel(String.format("Pacjent o podanym peselu %s posiada juz konto", pesel.get().getPesel()));
                 } else {
                     Pacjent save = mapper.save(pacjentDto);
                     pacjentDAO.zapiszPacjenta(conn, save);
@@ -137,12 +138,12 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     public PacjentZWizytamiDto pacjentZWizytami(String pesel) {
         try (Connection conn = dbUtils.getConnection()) {
-            Pacjent pacjent = pacjentDAO.znajdzPoPeselu(conn, pesel);
-            if (pacjent == null) {
+            Optional<Pacjent> pacjent = pacjentDAO.znajdzPoPeselu(conn, pesel);
+            if (!pacjent.isPresent()) {
                 throw new PacjentNotFoundException(String.format("Pacjenta o peselu %s nie znaleziono u nas w bazie  wybierz opcje 1 lub 2 z menu", pesel));
             }
-            List<Wizyta> byPacjent = wizytaDAO.findByPacjentId(conn, pacjent.getId());
-            return mapper.toDto(pacjent, byPacjent);
+            List<Wizyta> byPacjent = wizytaDAO.findByPacjentId(conn, pacjent.get().getId());
+            return mapper.toDto(pacjent.get(), byPacjent);
 
 
         } catch (SQLException e) {
