@@ -1,6 +1,5 @@
 package org.example.dao;
 
-import lombok.SneakyThrows;
 import org.example.model.Wizyta;
 
 import java.math.BigDecimal;
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WizytaDAOImpl implements WizytaDAO {
-    @SneakyThrows
+
     @Override
     public void save(Connection conn, Wizyta wizyta) {
 
@@ -24,18 +23,20 @@ public class WizytaDAOImpl implements WizytaDAO {
             ps.setBigDecimal(4, wizyta.getKwota());
 
             ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    @SneakyThrows
+
     @Override
-    public List<Wizyta> findByPacjentId(Connection conn, long pacjentId)  {
+    public List<Wizyta> findByPacjentId(Connection conn, long pacjentId) {
 
         List<Wizyta> result = new ArrayList<>();
 
 
-      //  String sql = "SELECT * FROM WIZYTA w INNER JOIN PACJENT p ON w.PACJENT_ID = p.ID WHERE p.ID = ?";
-        String sql= "SELECT * FROM WIZYTA  WHERE PACJENT_ID = ?";
+        //  String sql = "SELECT * FROM WIZYTA w INNER JOIN PACJENT p ON w.PACJENT_ID = p.ID WHERE p.ID = ?";
+        String sql = "SELECT * FROM WIZYTA  WHERE PACJENT_ID = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -50,15 +51,16 @@ public class WizytaDAOImpl implements WizytaDAO {
 
                 result.add(w);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         return result;
     }
 
 
-    @SneakyThrows
     @Override
-    public BigDecimal sumByDateRange(Connection conn, LocalDate from, LocalDate to)  {
+    public BigDecimal sumByDateRange(Connection conn, LocalDate from, LocalDate to) {
 
         String sql = "SELECT SUM(KWOTA) FROM WIZYTA WHERE  DATA_WIZYTY BETWEEN ? AND ?";
 
@@ -73,6 +75,8 @@ public class WizytaDAOImpl implements WizytaDAO {
             if (rs.next()) {
                 return rs.getBigDecimal(1);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         return BigDecimal.ZERO;

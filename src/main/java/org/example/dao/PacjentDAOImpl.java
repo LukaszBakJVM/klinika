@@ -1,18 +1,13 @@
 package org.example.dao;
 
-import lombok.SneakyThrows;
 import org.example.exception.SqlConnectionException;
 import org.example.model.Pacjent;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class PacjentDAOImpl implements PacjentDAO {
 
 
-    @SneakyThrows
     @Override
     public Long zapiszPacjentaIWIzyte(Connection conn, Pacjent pacjent) {
 
@@ -33,13 +28,14 @@ public class PacjentDAOImpl implements PacjentDAO {
                     return id;
                 }
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         throw new SqlConnectionException("Nie udało się zapisać pacjenta");
     }
 
 
-    @SneakyThrows
     @Override
     public Pacjent znajdzPoPeselu(Connection conn, String pesel) {
 
@@ -56,12 +52,14 @@ public class PacjentDAOImpl implements PacjentDAO {
                     return Pacjent.builder().id(rs.getLong("ID")).imie(rs.getString("IMIE")).nazwisko(rs.getString("NAZWISKO")).pesel(rs.getString("PESEL")).build();
                 }
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         return null;
     }
 
-    @SneakyThrows
+
     @Override
     public void zapiszPacjenta(Connection conn, Pacjent pacjent) {
 
@@ -83,6 +81,8 @@ public class PacjentDAOImpl implements PacjentDAO {
 
                 }
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
