@@ -61,6 +61,8 @@ class ClinicServiceImplTest {
         WizytaDto wizytaDto = WizytaDto.builder().dataWizyty(LocalDate.now()).rozpoznanie("wywiad").kwota(new BigDecimal("250")).build();
 
         doNothing().when(validatorService).validation(any());
+        when(mapper.save(any())).thenReturn(mock(Pacjent.class));
+        when(mapper.toEntity(any(), any())).thenReturn(mock(Wizyta.class));
 
 
         ZapiszPacjentaZWizytami dto = ZapiszPacjentaZWizytami.builder().pacjentDto(pacjentDto).wizytaDto(wizytaDto).build();
@@ -155,7 +157,7 @@ class ClinicServiceImplTest {
     void powinienZwracacSumeKwoty() throws SQLException {
         when(dbUtils.getConnection()).thenReturn(connection);
 
-        when(wizytaDAO.sumByDateRange(any(), any(), any())).thenReturn(BigDecimal.TEN);
+        when(wizytaDAO.sumaNaPodstawieDaty(any(), any(), any())).thenReturn(BigDecimal.TEN);
 
         BigDecimal result = service.kwota(LocalDate.now(), LocalDate.now());
 

@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.exception.SqlConnectionException;
 import org.example.model.Wizyta;
 
 import java.math.BigDecimal;
@@ -24,7 +25,7 @@ public class WizytaDAOImpl implements WizytaDAO {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SqlConnectionException("Błąd zapisu wizyty  ", e);
         }
     }
 
@@ -35,7 +36,7 @@ public class WizytaDAOImpl implements WizytaDAO {
         List<Wizyta> result = new ArrayList<>();
 
 
-        //  String sql = "SELECT * FROM WIZYTA w INNER JOIN PACJENT p ON w.PACJENT_ID = p.ID WHERE p.ID = ?";
+        
         String sql = "SELECT * FROM WIZYTA  WHERE PACJENT_ID = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -52,7 +53,7 @@ public class WizytaDAOImpl implements WizytaDAO {
                 result.add(w);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SqlConnectionException("Błąd odczytu wizyty pacjenta  ", e);
         }
 
         return result;
@@ -60,7 +61,7 @@ public class WizytaDAOImpl implements WizytaDAO {
 
 
     @Override
-    public BigDecimal sumByDateRange(Connection conn, LocalDate from, LocalDate to) {
+    public BigDecimal sumaNaPodstawieDaty(Connection conn, LocalDate from, LocalDate to) {
 
         String sql = "SELECT SUM(KWOTA) FROM WIZYTA WHERE  DATA_WIZYTY BETWEEN ? AND ?";
 
@@ -76,7 +77,7 @@ public class WizytaDAOImpl implements WizytaDAO {
                 return rs.getBigDecimal(1);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SqlConnectionException("Błąd odczytu sumy    %s", e);
         }
 
         return BigDecimal.ZERO;

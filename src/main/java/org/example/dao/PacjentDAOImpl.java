@@ -29,7 +29,7 @@ public class PacjentDAOImpl implements PacjentDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SqlConnectionException("Błąd zapisu pacjenta ", e);
         }
 
         throw new SqlConnectionException("Nie udało się zapisać pacjenta");
@@ -53,7 +53,7 @@ public class PacjentDAOImpl implements PacjentDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SqlConnectionException("Błąd odczytu pacjenta po PESEL  ", e);
         }
 
         return null;
@@ -82,7 +82,7 @@ public class PacjentDAOImpl implements PacjentDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SqlConnectionException("Błąd zapisu pacjenta ", e);
         }
     }
 }

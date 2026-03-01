@@ -154,7 +154,7 @@ public class ClinicServiceImpl implements ClinicService {
     public BigDecimal kwota(LocalDate poczatek, LocalDate koniec) {
 
         try (Connection conn = dbUtils.getConnection()) {
-            return wizytaDAO.sumByDateRange(conn, poczatek, koniec);
+            return wizytaDAO.sumaNaPodstawieDaty(conn, poczatek, koniec);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

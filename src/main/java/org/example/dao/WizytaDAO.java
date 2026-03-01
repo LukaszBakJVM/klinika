@@ -11,5 +11,5 @@ import java.util.List;
 public interface WizytaDAO {
     void save(Connection conn, Wizyta wizyta) throws SQLException;
     List<Wizyta> findByPacjentId(Connection conn, long pacjentId) ;
-    BigDecimal sumByDateRange(Connection conn, LocalDate from, LocalDate to) ;
+    BigDecimal sumaNaPodstawieDaty(Connection conn, LocalDate from, LocalDate to) ;
 }
