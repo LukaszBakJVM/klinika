@@ -33,14 +33,14 @@ target/clinic-1.0-SNAPSHOT.jar
 Konfiguracja połączenia z bazą danych znajduje się w klasie:
 
 ```
-org.example.config.DbUtils
+resources/application.properties
 ```
 
-W tej klasie ustaw:
+W tem pliku ustaw:
 
-- URL bazy danych
-- użytkownika
-- hasło
+- URL bazy danych -> db.url
+- użytkownika -> db.user
+- hasło -> db.password
 
 - struktura tabel 
  ```
