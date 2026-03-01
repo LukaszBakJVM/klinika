@@ -50,8 +50,8 @@ public class PacjentDAOImpl implements PacjentDAO {
             try (ResultSet rs = ps.executeQuery()) {
 
                 if (rs.next()) {
-                    Pacjent pacjent1111111 = Pacjent.builder().id(rs.getLong("ID")).imie(rs.getString("IMIE")).nazwisko(rs.getString("NAZWISKO")).pesel(rs.getString("PESEL")).build();
-                    return Optional.of(pacjent1111111);
+                    Pacjent pacjentBuilder = Pacjent.builder().id(rs.getLong("ID")).imie(rs.getString("IMIE")).nazwisko(rs.getString("NAZWISKO")).pesel(rs.getString("PESEL")).build();
+                    return Optional.of(pacjentBuilder);
                 }
             }
         } catch (SQLException e) {

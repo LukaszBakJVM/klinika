@@ -1,0 +1,43 @@
+CREATE SEQUENCE GEN_PACJENT_ID;
+
+CREATE SEQUENCE GEN_WIZYTA_ID;
+
+CREATE TABLE PACJENT (
+                         ID BIGINT  PRIMARY KEY,
+                         IMIE VARCHAR(100),
+                         NAZWISKO VARCHAR(100),
+                         PESEL VARCHAR(20) UNIQUE
+);
+
+CREATE TABLE WIZYTA (
+                        ID BIGINT  PRIMARY KEY,
+                        PACJENT_ID BIGINT,
+                        DATA_WIZYTY DATE,
+                        ROZPOZNANIE VARCHAR(255),
+                        KWOTA DECIMAL(10,2),
+                        CONSTRAINT FK_WIZYTA_PACJENT
+                            FOREIGN KEY (PACJENT_ID)
+                                REFERENCES PACJENT(ID)
+);
+
+
+
+SET TERM ^ ;
+
+CREATE OR ALTER TRIGGER PACJENT_BI
+BEFORE INSERT ON PACJENT
+AS
+BEGIN
+    IF (NEW.ID IS NULL) THEN
+        NEW.ID = NEXT VALUE FOR GEN_PACJENT_ID;
+END^
+
+CREATE OR ALTER TRIGGER WIZYTA_BI
+BEFORE INSERT ON WIZYTA
+AS
+BEGIN
+    IF (NEW.ID IS NULL) THEN
+        NEW.ID = NEXT VALUE FOR GEN_WIZYTA_ID;
+END^
+
+SET TERM ; ^
