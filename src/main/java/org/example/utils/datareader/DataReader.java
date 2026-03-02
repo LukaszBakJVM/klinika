@@ -34,7 +34,7 @@ public class DataReader {
     }
 
 
-    public ZapiszPacjentaZWizytami zapiszPacjentaZWizytama() {
+    public ZapiszPacjentaZWizytami zapiszPacjentaZWizyta() {
         printLine("Imię: ");
         String imie = sc.nextLine();
 
@@ -47,6 +47,7 @@ public class DataReader {
 
         LocalDate dateWizyty = readDate();
         if (dateWizyty.isBefore(LocalDate.now())){
+            throw new WrongDatesException(String.format("Podana data %s jest data przeszłą ",dateWizyty));
 
         }
 
