@@ -97,7 +97,7 @@ public class KlinikaControl {
         try {
 
 
-            ZapiszPacjentaZWizytami zapiszPacjentaZWizytami = dataReader.zapiszPacjentaZWizytama();
+            ZapiszPacjentaZWizytami zapiszPacjentaZWizytami = dataReader.zapiszPacjentaZWizyta();
             clinicService.zapiszPacjentaZWizytama(zapiszPacjentaZWizytami);
             dataReader.printLine("Wizyta została zapisana");
         } catch (Exception e) {
