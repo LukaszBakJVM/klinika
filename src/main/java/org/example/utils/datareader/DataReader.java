@@ -4,6 +4,7 @@ import org.example.dto.PacjentDto;
 import org.example.dto.WizytaDto;
 import org.example.dto.ZakresDaty;
 import org.example.dto.ZapiszPacjentaZWizytami;
+import org.example.exception.WrongDatesException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -33,7 +34,7 @@ public class DataReader {
     }
 
 
-    public ZapiszPacjentaZWizytami zapiszPacjentaZWizytama() {
+    public ZapiszPacjentaZWizytami zapiszPacjentaZWizyta() {
         printLine("Imię: ");
         String imie = sc.nextLine();
 
@@ -45,6 +46,10 @@ public class DataReader {
 
 
         LocalDate dateWizyty = readDate();
+        if (dateWizyty.isBefore(LocalDate.now())){
+            throw new WrongDatesException(String.format("Podana data %s jest data przeszłą ",dateWizyty));
+
+        }
 
         printLine("Rozpoznanie: ");
         String rozpoznanie = sc.nextLine();
