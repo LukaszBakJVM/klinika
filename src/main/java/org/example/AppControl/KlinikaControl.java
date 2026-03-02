@@ -52,10 +52,10 @@ public class KlinikaControl {
                         exit();
                         break;
                     default:
-                        dataReader.printLine("Nie ma takiej opcji, wprowadź ponownie: ");
+                        dataReader.error("Nie ma takiej opcji, wprowadź ponownie: ");
                 }
             } catch (Exception e) {
-                dataReader.printLine(e.getMessage());
+                dataReader.error(e.getMessage());
                 option = null;
 
             }
@@ -71,9 +71,9 @@ public class KlinikaControl {
                 option = Option.createFromInt(dataReader.getInt());
                 optionOk = true;
             } catch (NoSuchOptionException e) {
-                dataReader.printLine(e.getMessage() + ", podaj ponownie:");
+                dataReader.error(e.getMessage() + ", podaj ponownie:");
             } catch (InputMismatchException ignored) {
-                dataReader.printLine("Wprowadzono wartość, która nie jest liczbą, podaj ponownie:");
+                dataReader.error("Wprowadzono wartość, która nie jest liczbą, podaj ponownie:");
             }
         }
 

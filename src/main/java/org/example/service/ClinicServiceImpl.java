@@ -87,19 +87,13 @@ public class ClinicServiceImpl implements ClinicService {
 
                 }
                 conn.commit();
-
             } catch (Exception e) {
-
-                try {
-                    conn.rollback();
-                } catch (SQLException ex) {
-
-
-                    throw new SqlConnectionException(String.format("Błąd transakcji %s ", e));
-                }
+                conn.rollback();
+                throw new SqlConnectionException("Błąd transakcji", e);
             }
+
         } catch (SQLException e) {
-            throw new SqlConnectionException(String.format("Błąd transakcji %s ", e));
+            throw new SqlConnectionException("Błąd połączenia z bazą", e);
         }
     }
 

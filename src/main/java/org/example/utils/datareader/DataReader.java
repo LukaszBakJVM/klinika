@@ -102,7 +102,7 @@ public class DataReader {
 
 
             } catch (DateTimeParseException e) {
-                printLine("Zła data! Spróbuj ponownie.");
+                error("Zła data! Spróbuj ponownie.");
             }
         }
     }
@@ -117,13 +117,16 @@ public class DataReader {
                 return new BigDecimal(kwota).setScale(2, RoundingMode.HALF_UP);
 
             } catch (Exception e) {
-                printLine("Zły format kwoty! Spróbuj ponownie.");
+                error("Zły format kwoty! Spróbuj ponownie.");
             }
         }
     }
 
     public <T> void printLine(T value) {
         System.out.println(value);
+    }
+    public <T> void error(T value){
+        System.err.println(value);
     }
 
 }
