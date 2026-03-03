@@ -134,7 +134,7 @@ public class ClinicServiceImpl implements ClinicService {
         try (Connection conn = dbUtils.getConnection()) {
             Optional<Pacjent> pacjent = pacjentDAO.znajdzPoPeselu(conn, pesel);
             if (!pacjent.isPresent()) {
-                throw new PacjentNotFoundException(String.format("Pacjenta o peselu %s nie znaleziono u nas w bazie  wybierz opcje 1 lub 2 z menu", pesel));
+                throw new PacjentNotFoundException(String.format("Pacjenta o peselu %s nie znaleziono u nas w bazie  ", pesel));
             }
             List<Wizyta> byPacjent = wizytaDAO.findByPacjentId(conn, pacjent.get().getId());
             return mapper.toDto(pacjent.get(), byPacjent);
