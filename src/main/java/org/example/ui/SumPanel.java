@@ -13,28 +13,44 @@ public class SumPanel extends JPanel {
     private final DatePicker poczatek = new DatePicker();
     private final DatePicker koniec = new DatePicker();
 
-    private final JLabel wynikLabel = new JLabel("Suma: ");
+    private final JLabel wynikLabel = new JLabel("Suma: 0.00 zł");
+    private final JButton liczButton = new JButton("Oblicz");
 
     private final ClinicService clinicService;
 
     public SumPanel() {
         this.clinicService = new ClinicServiceImpl();
-        setLayout(new GridLayout(4, 2, 5, 5));
 
-        add(new JLabel("Data od:"));
-        add(poczatek);
+        initUI();
+        initListeners();
+    }
 
-        add(new JLabel("Data do:"));
-        add(koniec);
+    private void initUI() {
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JButton liczButton = new JButton("Oblicz");
+        add(createRow("Data od:", poczatek));
+        add(Box.createVerticalStrut(10));
+        add(createRow("Data do:", koniec));
+        add(Box.createVerticalStrut(15));
         add(liczButton);
-        add(new JLabel());
-
+        add(Box.createVerticalStrut(15));
         add(wynikLabel);
 
+        wynikLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        liczButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+    }
+
+    private JPanel createRow(String labelText, JComponent component) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.add(new JLabel(labelText));
+        panel.add(component);
+        return panel;
+    }
+
+    private void initListeners() {
         liczButton.addActionListener(e -> policzSume());
     }
+
     private void policzSume() {
         try {
             LocalDate dataOd = poczatek.getDate();
@@ -53,10 +69,7 @@ public class SumPanel extends JPanel {
             wynikLabel.setText("Suma: " + suma + " zł");
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this,
-                    ex.getMessage(),
-                    "Błąd",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Błąd", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

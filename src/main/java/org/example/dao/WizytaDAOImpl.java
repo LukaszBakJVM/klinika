@@ -74,7 +74,8 @@ public class WizytaDAOImpl implements WizytaDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return rs.getBigDecimal(1);
+                BigDecimal suma = rs.getBigDecimal(1);
+                return suma != null ? suma : BigDecimal.ZERO;
             }
         } catch (SQLException e) {
             throw new SqlConnectionException("Błąd odczytu sumy    %s", e);

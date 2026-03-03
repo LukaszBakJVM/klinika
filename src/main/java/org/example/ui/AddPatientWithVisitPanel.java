@@ -13,60 +13,85 @@ import java.math.BigDecimal;
 
 
 public class AddPatientWithVisitPanel extends JPanel {
-    private final ClinicService service = new ClinicServiceImpl();
+    private final ClinicService service;
 
-    private final JTextField imie = new JTextField(10);
-    private final JTextField nazwisko = new JTextField(6);
-    private final JTextField pesel = new JTextField(3);
 
-    private final JTextField rozpoznanie = new JTextField(3);
-    private final JTextField cena = new JTextField(3);
+    private final JTextField imie = new JTextField(15);
+    private final JTextField nazwisko = new JTextField(15);
+    private final JTextField pesel = new JTextField(15);
+    private final JTextField rozpoznanie = new JTextField(15);
+    private final JTextField cena = new JTextField(15);
     private final DatePicker datePicker = new DatePicker();
 
+    private final JButton saveButton = new JButton("Zapisz");
 
     public AddPatientWithVisitPanel() {
-
-
-        setLayout(new GridLayout(0, 1, 10, 10));
-
-        add(new JLabel("Imię:"));
-        add(imie);
-
-        add(new JLabel("Nazwisko:"));
-        add(nazwisko);
-
-        add(new JLabel("Pesel:"));
-        add(pesel);
-
-
-        add(new JLabel("data:"));
-        add(datePicker);
-
-        add(new JLabel("rozpoznanie:"));
-        add(rozpoznanie);
-
-        add(new JLabel("kwota:"));
-        add(cena);
-
-        JButton save = new JButton("Zapisz");
-        add(save);
-
-        save.addActionListener(e -> zapiszZWizytami());
+        this.service = new ClinicServiceImpl();
+        initUI();
+        initListeners();
     }
 
+    private void initUI() {
+        setLayout();
+        addFields();
+    }
+
+    private void setLayout() {
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    }
+
+    private void addFields() {
+        add(createRow("Imię:", imie));
+        add(createRow("Nazwisko:", nazwisko));
+        add(createRow("PESEL:", pesel));
+        add(createRow("Data wizyty:", datePicker));
+        add(createRow("Rozpoznanie:", rozpoznanie));
+        add(createRow("Kwota:", cena));
+
+        add(Box.createVerticalStrut(15));
+        add(saveButton);
+    }
+
+    private JPanel createRow(String labelText, JComponent component) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.add(new JLabel(labelText));
+        panel.add(component);
+        return panel;
+    }
+
+    private void initListeners() {
+        saveButton.addActionListener(e -> zapiszZWizytami());
+    }
 
     private void zapiszZWizytami() {
         try {
-            PacjentDto dto = PacjentDto.builder().imie(imie.getText()).nazwisko(nazwisko.getText()).pesel(pesel.getText()).build();
-            WizytaDto wizytaDto = WizytaDto.builder().kwota(new BigDecimal(cena.getText())).dataWizyty(datePicker.getDate()).rozpoznanie(rozpoznanie.getText()).build();
+            PacjentDto dto = PacjentDto.builder()
+                    .imie(imie.getText().trim())
+                    .nazwisko(nazwisko.getText().trim())
+                    .pesel(pesel.getText().trim())
+                    .build();
 
-            service.zapiszPacjentaZWizytama(ZapiszPacjentaZWizytami.builder().pacjentDto(dto).wizytaDto(wizytaDto).build());
+            WizytaDto wizytaDto = WizytaDto.builder()
+                    .kwota(new BigDecimal(cena.getText().trim()))
+                    .dataWizyty(datePicker.getDate())
+                    .rozpoznanie(rozpoznanie.getText().trim())
+                    .build();
+
+            service.zapiszPacjentaZWizytama(
+                    ZapiszPacjentaZWizytami.builder()
+                            .pacjentDto(dto)
+                            .wizytaDto(wizytaDto)
+                            .build()
+            );
 
             JOptionPane.showMessageDialog(this, "Zapisano!");
             wyczyscPola();
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Błąd", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    ex.getMessage(),
+                    "Błąd",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -76,7 +101,6 @@ public class AddPatientWithVisitPanel extends JPanel {
         pesel.setText("");
         cena.setText("");
         rozpoznanie.setText("");
-
         datePicker.setDate(null);
     }
 }
