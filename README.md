@@ -1,6 +1,10 @@
 # 🏥 Clinic – Aplikacja Java
 
-Aplikacja desktopowa do zarządzania kliniką napisana w Java.
+Aplikacja do zarządzania kliniką napisana w Java.
+
+- Branch `master` – wersja podstawowa aplikacji.
+- Branch `swing` – wersja desktopowa z graficznym interfejsem użytkownika (Swing).
+
 
 ---
 
