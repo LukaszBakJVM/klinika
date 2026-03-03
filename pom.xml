@@ -65,6 +65,14 @@
             <version>3.12.4</version>
             <scope>test</scope>
         </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker -->
+        <!-- Source: https://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker -->
+        <dependency>
+            <groupId>com.github.lgooddatepicker</groupId>
+            <artifactId>LGoodDatePicker</artifactId>
+            <version>11.2.1</version>
+            <scope>compile</scope>
+        </dependency>
 
 
     </dependencies>

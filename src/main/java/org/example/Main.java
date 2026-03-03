@@ -1,19 +1,17 @@
 package org.example;
 
-import org.example.AppControl.KlinikaControl;
+import org.example.ui.MainFrame;
 
-import java.util.logging.LogManager;
+import javax.swing.*;
 
 public class Main {
-    private static final String APP_NAME = "Klinika v2.4";
-
-    public static void main(String[] args)  {
 
 
-        LogManager.getLogManager().reset();
-        System.out.println(APP_NAME);
-        KlinikaControl klinikaControl = new KlinikaControl();
-        klinikaControl.controlLoop();
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(() ->
+                new MainFrame().setVisible(true)
+        );
     }
 }
 
