@@ -40,7 +40,7 @@ Konfiguracja połączenia z bazą danych znajduje się w :
 resources/application.properties
 ```
 
-W tem pliku ustaw:
+W tym pliku ustaw:
 
 - URL bazy danych -> db.url
 - użytkownika -> db.user
