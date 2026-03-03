@@ -2,16 +2,14 @@ package org.example.dto;
 
 import lombok.Builder;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Builder
 public class WizytaDto {
     @NotNull(message = "Data wizyty nie może być pusta")
+    @FutureOrPresent(message = "Data wizyty nie może być wcześniejsza niż dzisiaj")
     private  LocalDate dataWizyty;
     @NotBlank(message = "Rozpoznanie nie może być puste")
     @Size(max = 255, message = "Rozpoznanie za długie")
