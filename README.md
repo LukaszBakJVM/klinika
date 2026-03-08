@@ -2,7 +2,7 @@
 
 Aplikacja do zarządzania kliniką napisana w Java.
 
-- Branch `master` – wersja podstawowa aplikacji.
+- Branch `master` – wersja podstawowa aplikacji(konsolowa).
 - Branch `swing` – wersja desktopowa z graficznym interfejsem użytkownika (Swing).
 
 
