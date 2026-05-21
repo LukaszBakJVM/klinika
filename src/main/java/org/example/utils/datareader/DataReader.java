@@ -38,6 +38,8 @@ public class DataReader {
         printLine("Imię: ");
         String imie = sc.nextLine();
 
+
+
         printLine("Nazwisko: ");
         String nazwisko = sc.nextLine();
 
