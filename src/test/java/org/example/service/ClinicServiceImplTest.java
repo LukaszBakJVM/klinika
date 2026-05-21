@@ -37,6 +37,8 @@ class ClinicServiceImplTest {
 
     @Mock
     private PacjentDAO pacjentDAO;
+
+
     @Mock
     private WizytaDAO wizytaDAO;
     @Mock

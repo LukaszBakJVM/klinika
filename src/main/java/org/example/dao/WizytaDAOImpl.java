@@ -57,6 +57,8 @@ public class WizytaDAOImpl implements WizytaDAO {
         }
 
         return result;
+
+
     }
 
 

@@ -40,6 +40,14 @@ public class DataReader {
 
 
 
+
+
+
+
+
+
+
+
         printLine("Nazwisko: ");
         String nazwisko = sc.nextLine();
 

@@ -52,6 +52,8 @@ public class ClinicServiceImpl implements ClinicService {
         this.wizytaDAO = new WizytaDAOImpl();
         this.validatorService = new ValidatorService();
         this.mapper = new Mapper();
+
+
     }
 
 
