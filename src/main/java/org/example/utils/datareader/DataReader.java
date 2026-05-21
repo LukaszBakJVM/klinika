@@ -43,6 +43,10 @@ public class DataReader {
         printLine("Nazwisko: ");
         String nazwisko = sc.nextLine();
 
+
+
+
+
         printLine("Pesel: ");
         String pesel = sc.nextLine();
 
