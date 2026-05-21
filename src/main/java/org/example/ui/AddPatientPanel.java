@@ -42,6 +42,8 @@ public class AddPatientPanel extends JPanel {
 
     private void initListeners() {
         saveButton.addActionListener(e -> savePatient());
+
+
     }
 
     private void savePatient() {
