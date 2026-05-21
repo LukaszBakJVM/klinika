@@ -33,6 +33,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ClinicServiceImplTest {
 
+
+
     @Mock
     private PacjentDAO pacjentDAO;
     @Mock
