@@ -46,6 +46,8 @@ class ClinicServiceImplTest {
     @Mock
     private Connection connection;
 
+
+
     @InjectMocks
     private ClinicServiceImpl service;
 
